@@ -1,12 +1,14 @@
 const express = require('express');
-const cors = require('cors');
+const cors = require('cors')    /* This is new */
 const app = express();
+app.use(express.json())
+app.use(express.urlencoded({extended:true}))
+app.use(cors(
+    {origin: 'http://localhost:3000'}
+))                
 
-app.use(cors({origin:'http://localhost:3000', credentials:true}));
-app.use(express.json());                           /* This is new and allows JSON Objects to be posted */
-app.use(express.urlencoded({ extended: true }));   /* This is new and allows JSON Objects with strings and arrays*/
-require('./config/mongoose.config');    /* This is new */
-require('./routes/person.routes')(app);
+require("./config/mongoose.config") //need to add config file
+require('./routes/person.routes')(app);//adding routes to routes file
 app.listen(8000, () => {
     console.log("Listening at Port 8000")
 })

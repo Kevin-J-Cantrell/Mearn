@@ -36,8 +36,8 @@ const updateExistingProduct = (req, res) => {
         req.body,
         { new: true, runValidators: true }
     )
-        .then(updatedProduct => {
-            res.json({ product: updatedProduct })
+        .then(Product => {
+            res.json({ Product})
         })
         .catch((err) => {
             res.json({ message: 'Something went wrong', error: err })
@@ -47,7 +47,7 @@ const updateExistingProduct = (req, res) => {
 const deleteAnExistingProduct = (req, res) => {
     Product.deleteOne({ _id: req.params.id })
         .then(result => {
-            res.json({ result: result })
+            res.json({result})
         })
         .catch((err) => {
             res.json({ message: 'Something went wrong', error: err })

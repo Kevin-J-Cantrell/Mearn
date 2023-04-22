@@ -1,23 +1,23 @@
 import React, { useState } from 'react'
 import axios from 'axios';
-const ProductForm = () => {
+const ProductForm = (props) => {
     //keep track of what is being typed via useState hook
+    const {product,setProduct} = props;// this is used to keep track of what is being typed via useState hook
     const [title, setTitle] = useState(""); 
     const [price, setPrice] = useState("");
     const [description, setDescription] = useState("");
     //handler when the form is submitted
     const onSubmitHandler = (e) => {
-        //prevent default behavior of the submit
+        const payLoad = {title,price,description}
         e.preventDefault();
+        //prevent default behavior of the submit
+        axios.post('http://localhost:8000/api/Products',payLoad )
+       
         //make a post request to create a new person
-        axios.post('http://localhost:8000/api/Products', {
-            title,    // this is shortcut syntax for title: title,
-            price,      // this is shortcut syntax for price: price
-            description      // this is shortcut syntax for description: description
-        })
-            .then(res=>{
-                console.log(res); // always console log to get used to tracking your data!
-                console.log(res.data);
+        .then(res=>{
+            console.log(res); // always console log to get used to tracking your data!
+            console.log(res.data.product);// this is used to track your data when you create a new person
+            setProduct([...product, res.data.product]); // this is used to set the product data for the product object
             })
             .catch(err=>console.log(err))
     }
@@ -26,14 +26,12 @@ const ProductForm = () => {
         <form onSubmit={onSubmitHandler}>
             <p>
                 <label>Title:</label><br/>
-                {/* When the user types in this input, our onChange synthetic event 
-                    runs this arrow function, setting that event's target's (input) 
-                    value (what's typed into the input) to our updated state   */}
+                {}
                 <input type="text" onChange = {(e)=>setTitle(e.target.value)}/>
             </p>
             <p>
                 <label>Price:</label><br/>
-                <input type="text" onChange = {(e)=>setPrice(e.target.value)}/>
+                <input type="number" onChange = {(e)=>setPrice(e.target.value)}/>
             </p>
             <p>
                 <label>Description:</label><br/>
